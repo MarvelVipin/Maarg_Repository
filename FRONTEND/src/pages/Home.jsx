@@ -1,4 +1,4 @@
-import React, { use, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
@@ -22,7 +22,7 @@ const Home = () => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
         height: '70%',
-        padding: 24
+        padding: '24px', 
         // opacity: 1,
       })
       gsap.to(panelCloseRef.current, {
@@ -43,11 +43,11 @@ const Home = () => {
   useGSAP(function () {
     if (vehiclePanel) {
       gsap.to(vehiclePanelRef.current, {
-        translateY: '0%',
+        transform:'translateY(0)',
       })
     } else {
       gsap.to(vehiclePanelRef.current, {
-        translateY: '100%',
+       transform:'translateY(100%)',
       })
     }
   }, [vehiclePanel])
@@ -88,13 +88,15 @@ const Home = () => {
               className='bg-[#eee] px-12 py-2 text-base rounded-lg  w-full mt-4' type="text" placeholder='Enter destination' />
           </form>
         </div>
-        <div ref={panelRef} className='h-[70%] bg-white h-0'>
+        <div ref={panelRef} className='bg-white h-0'>
           <LocationSearchPanel  setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel}/>
         </div>
       </div>
       <div ref={vehiclePanelRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8'>
+        <i className="ri-arrow-down-wide-line"></i>
         <h3 className='text-2xl font-semibold mb-5'>Choose Vehicle</h3>
-        <div className='w-full mb-2 flex border-2 active:border-black rounded-xl item-center justify-between p-3 bg-gray-100'>
+
+        <div className='w-full mb-2 flex border-2 active:border-black rounded-xl items-center justify-between p-3 bg-gray-100'>
           <img className='h-12' src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy85OWJmYWM5Mi00ODAzLTQxNGMtODRmYi1kMWZmNjU0NWM5YzAucG5n" alt="" />
           <div className=' w-1/2 ml-5'>
             <h4 className='font-medium text-base'>Maarg Car <span><i className="ri-user-fill"></i>5</span></h4>
@@ -103,7 +105,7 @@ const Home = () => {
           </div>
           <h2 className='text-xl font-semibold'>₹193</h2>
         </div>
-        <div className='w-full mb-2 flex border-2  rounded-xl active:border-black item-center justify-between p-3 bg-gray-100'>
+        <div className='w-full mb-2 flex border-2  rounded-xl active:border-black items-center justify-between p-3 bg-gray-100'>
           <img className='h-12' src="https://png.pngtree.com/png-vector/20220326/ourmid/pngtree-motorcycle-cartoon-vector-colorful-illustrations-png-image_4514944.png" alt="" />
           <div className=' w-1/2 ml-5'>
             <h4 className='font-medium text-base'>BikeRide <span><i className="ri-user-fill"></i>1</span></h4>
@@ -112,7 +114,7 @@ const Home = () => {
           </div>
           <h2 className='text-xl font-semibold'>₹85</h2>
         </div>
-        <div className='w-full mb-2 flex border-2 rounded-xl active:border-black  item-center justify-between p-3 bg-gray-100'>
+        <div className='w-full mb-2 flex border-2 rounded-xl active:border-black  items-center justify-between p-3 bg-gray-100'>
           <img className='h-12' src="https://png.pngtree.com/png-clipart/20230414/original/pngtree-blue-rickshaw-png-image_9056195.png" alt="" />
           <div className=' w-1/2 ml-5'>
             <h4 className='font-medium text-base'>TriCar <span><i className="ri-user-fill"></i>1</span></h4>
@@ -121,7 +123,7 @@ const Home = () => {
           </div>
           <h2 className='text-xl font-semibold'>₹85</h2>
         </div>
-        <div className='w-full mb-2 flex border-2  rounded-xl active:border-black item-center justify-between p-3 bg-gray-100'>
+        <div className='w-full mb-2 flex border-2  rounded-xl active:border-black items-center justify-between p-3 bg-gray-100'>
           <img className='h-12' src="https://png.pngtree.com/png-vector/20220326/ourmid/pngtree-motorcycle-cartoon-vector-colorful-illustrations-png-image_4514944.png" alt="" />
           <div className=' w-1/2 ml-5'>
             <h4 className='font-medium text-base'>Maarg Car<span><i className="ri-user-fill"></i>1</span></h4>
