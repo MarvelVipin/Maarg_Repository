@@ -5,6 +5,8 @@ import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel.jsx'
 import VehiclePanel from '../components/VehiclePanel.jsx'
 import ConfirmRide from '../components/ConfirmRide.jsx'
+import LookingForDriver from '../components/LookingForDriver.jsx'
+import WaitingForDriver from '../components/WaitingForDriver.jsx'
 
 const Home = () => {
 
@@ -13,10 +15,12 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false)
   const vehiclePanelRef = useRef(null)
   const confirmRidePanelRef = useRef(null)
+  const vehicleFoundRef = useRef(null)
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
   const [vehiclePanel, setVehiclePanel] = useState(false)
   const [confirmRidePanel, setConfirmRidePanel] = useState(false)
+  const [vehicleFound, setVehicleFound] = useState(false)
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -26,7 +30,7 @@ const Home = () => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
         height: '70%',
-        padding: '24px', 
+        padding: '24px',
         // opacity: 1,
       })
       gsap.to(panelCloseRef.current, {
@@ -47,11 +51,11 @@ const Home = () => {
   useGSAP(function () {
     if (vehiclePanel) {
       gsap.to(vehiclePanelRef.current, {
-        transform:'translateY(0)',
+        transform: 'translateY(0)',
       })
     } else {
       gsap.to(vehiclePanelRef.current, {
-       transform:'translateY(100%)',
+        transform: 'translateY(100%)',
       })
     }
   }, [vehiclePanel])
@@ -59,14 +63,26 @@ const Home = () => {
   useGSAP(function () {
     if (confirmRidePanel) {
       gsap.to(confirmRidePanelRef.current, {
-        transform:'translateY(0)',
+        transform: 'translateY(0)',
       })
     } else {
       gsap.to(confirmRidePanelRef.current, {
-       transform:'translateY(100%)',
+        transform: 'translateY(100%)',
       })
     }
   }, [confirmRidePanel])
+
+  useGSAP(function () {
+    if (vehicleFound) {
+      gsap.to(vehicleFoundRef.current, {
+        transform: 'translateY(0)',
+      })
+    } else {
+      gsap.to(vehicleFoundRef.current, {
+        transform: 'translateY(100%)',
+      })
+    }
+  }, [vehicleFound])
 
   return (
     <div className='h-screen relative overflow-hidden'>
@@ -105,7 +121,7 @@ const Home = () => {
           </form>
         </div>
         <div ref={panelRef} className='bg-white h-0'>
-          <LocationSearchPanel  setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel}/>
+          <LocationSearchPanel setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel} />
         </div>
       </div>
       <div ref={vehiclePanelRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
@@ -113,7 +129,15 @@ const Home = () => {
       </div>
 
       <div ref={confirmRidePanelRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-        <ConfirmRide/>
+        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+      </div>
+
+      <div  ref={vehicleFoundRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
+        <LookingForDriver setVehicleFound={setVehicleFound}/>
+      </div>
+
+       <div className='w-full fixed z-10 bottom-0  bg-white px-3 py-10 pt-12'>
+        <WaitingForDriver />
       </div>
     </div>
   )
