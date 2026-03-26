@@ -17,10 +17,13 @@ const Home = () => {
   const confirmRidePanelRef = useRef(null)
   const vehicleFoundRef = useRef(null)
   const panelRef = useRef(null)
+  const waitingForDriverRef = useRef(null)
   const panelCloseRef = useRef(null)
   const [vehiclePanel, setVehiclePanel] = useState(false)
   const [confirmRidePanel, setConfirmRidePanel] = useState(false)
   const [vehicleFound, setVehicleFound] = useState(false)
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
+
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -84,11 +87,23 @@ const Home = () => {
     }
   }, [vehicleFound])
 
+  useGSAP(function () {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, {
+        transform: 'translateY(0)',
+      })
+    } else {
+      gsap.to(waitingForDriverRef.current, {
+        transform: 'translateY(100%)',
+      })
+    }
+  }, [waitingForDriver])
+
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-4 top-1' src="https://cdn-icons-png.flaticon.com/128/346/346945.png" alt="" />
       <div className='h-screen w-screen'>
-        <img className='h-full w-full' src="https://ubernewsroomapi.10upcdn.com/wp-content/uploads/2018/10/Spaines-es_Shield-Web_RiderEmergencyAssistance_20181015.gif" alt="" />
+        <img className='h-full w-full object-cover' src="https://ubernewsroomapi.10upcdn.com/wp-content/uploads/2018/10/Spaines-es_Shield-Web_RiderEmergencyAssistance_20181015.gif" alt="" />
       </div>
       <div className='bg-white flex flex-col justify-end h-screen absolute top-0 w-full '>
         <div className='h-[30%] p-6 bg-white relative'>
@@ -129,15 +144,19 @@ const Home = () => {
       </div>
 
       <div ref={confirmRidePanelRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+        <ConfirmRide
+          setConfirmRidePanel={setConfirmRidePanel}
+          setVehicleFound={setVehicleFound}
+          setVehiclePanel={setVehiclePanel}
+        />
       </div>
 
-      <div  ref={vehicleFoundRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-        <LookingForDriver setVehicleFound={setVehicleFound}/>
+      <div ref={vehicleFoundRef} className='w-full fixed z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
+        <LookingForDriver setVehicleFound={setVehicleFound} />
       </div>
 
-       <div className='w-full fixed z-10 bottom-0  bg-white px-3 py-10 pt-12'>
-        <WaitingForDriver />
+      <div ref={waitingForDriverRef} className='w-full fixed z-10 bottom-0  bg-white px-3 py-10 pt-12'>
+        <WaitingForDriver waitingForDriver={waitingForDriver} />
       </div>
     </div>
   )
