@@ -170,7 +170,7 @@ const CaptainSignup = () => {
           </form>
         </div>
         <div>
-          <p className='text-[10px] leading-tight'>By proceeding, you agree and consent to receive communications from Voyage,
+          <p className='text-[10px] mt-8 leading-tight'>By proceeding, you agree and consent to receive communications from Voyage,
             including calls,messages, and SMS, for account-related updates, service notifications.</p>
         </div>
       </div>

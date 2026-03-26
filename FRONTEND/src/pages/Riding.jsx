@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Riding = () => {
   return (
     <div className='h-screen '>
-        <Link to='/home' className='fixed h-10 w-10 right-5 top-5 bg-orange-500 flex items-center justify-center rounded-full '>
+        <Link to='/home' className='fixed h-10 w-10 right-5 top-5 bg-purple-700 flex items-center justify-center rounded-full '>
             <i className=" text-lg font-medium text-white ri-home-9-line"></i>
         </Link>
       <div className='h-1/2'>
@@ -33,7 +33,7 @@ const Riding = () => {
             <i className=" text-lg font-bold text-gray-600 ri-bank-card-line gap-5  "></i>
             <div>
               <h4 className='text-lg font medium'>₹193.20</h4>
-              <p className='text-gray-600 text-sm -mt-1'>Cash Cash</p>
+              <p className='text-gray-600 text-sm -mt-1'>Pay the Cash</p>
             </div>
           </div>
         </div>
