@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const BlacklistTokenModel = require('../models/blacklistToken.model.js');
 const captainModel = require('../models/captain.model.js');
+const authMiddleware = require ('../middlewares/auth.middleware')
 
 module.exports.authUser = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
