@@ -1,6 +1,6 @@
-# 🚗 Maarg – Ride Booking Platform
+#  Maarg – Ride Booking Platform
 
-## 🌟 Overview
+##  Overview
 
 Maarg is a full-stack ride-booking application that connects users with drivers (captains) through a structured ride lifecycle system.
 
@@ -11,7 +11,7 @@ This repository is divided into:
 
 ---
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```
 MAARG/
@@ -21,7 +21,7 @@ MAARG/
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Run Backend
 
@@ -41,7 +41,7 @@ npm run dev
 
 ---
 
-## ✨ Features
+##  Features
 
 * Ride booking system
 * User & Captain modules
