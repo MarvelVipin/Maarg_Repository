@@ -17,7 +17,7 @@ const MapComponent = () => {
         );
     }, []);
 
-    console.log("MapComponent Rendered");
+   
 
     return (
         <MapContainer center={position} zoom={13} style={{ height: "100vh", width: "100%" }}>

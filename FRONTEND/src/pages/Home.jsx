@@ -132,13 +132,16 @@ const Home = () => {
 
 
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <MapComponent />
+        <MapComponent center={[25.3176, 82.9739]}
+          zoom={13}
+          zoomControl={false}
+          className="h-full w-full" />
       </div>
 
 
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full z-10 pointer-events-none pt-20'>
 
-        <div className='h-[30%] p-6 bg-white relative pointer-events-auto rounded-t-2xl'>
+        <div className='h-[40%] p-6 bg-white relative pointer-events-auto rounded-t-2xl flex flex-col'>
 
           <h5
             ref={panelCloseRef}
@@ -152,45 +155,40 @@ const Home = () => {
 
           <form onSubmit={submitHandler}>
             <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-700 rounded-full"></div>
-
-
-
             <div className="relative mt-5 space-y-4">
-
-  <div className="flex items-center bg-gray-100 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-black transition">
-    <i className="ri-map-pin-fill text-gray-600 text-lg mr-3"></i>
-    <input
-      value={pickup}
-      onChange={(e) => setPickup(e.target.value)}
-      onFocus={() => {
-        setActiveField("pickup");
-        setPanelOpen(true);
-      }}
-      placeholder="Enter pickup location"
-      className="bg-transparent outline-none w-full text-sm"
-    />
-  </div>
-
-  
-  <div className="flex items-center bg-gray-100 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-black transition">
-    <i className="ri-flag-2-fill text-gray-600 text-lg mr-3"></i>
-    <input
-      value={destination}
-      onChange={(e) => setDestination(e.target.value)}
-      onFocus={() => {
-        setActiveField("destination");
-        setPanelOpen(true);
-      }}
-      placeholder="Enter destination"
-      className="bg-transparent outline-none w-full text-sm"
-    />
-  </div>
-
-</div>
+              <div className="flex items-center bg-gray-100 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-black transition">
+                <i className="ri-map-pin-fill text-gray-600 text-lg mr-3"></i>
+                <input
+                  value={pickup}
+                  onChange={(e) => setPickup(e.target.value)}
+                  onFocus={() => {
+                    setActiveField("pickup");
+                    setPanelOpen(true);
+                  }}
+                  placeholder="Enter pickup location"
+                  className="bg-transparent outline-none w-full text-sm"
+                />
+              </div>
 
 
-
+              <div className="flex items-center bg-gray-100 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-black transition">
+                <i className="ri-flag-2-fill text-gray-600 text-lg mr-3"></i>
+                <input
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  onFocus={() => {
+                    setActiveField("destination");
+                    setPanelOpen(true);
+                  }}
+                  placeholder="Enter destination"
+                  className="bg-transparent outline-none w-full text-sm"
+                />
+              </div>
+            </div>
           </form>
+          <button className='bg-purple-800  text-white w-full py-3 px-2 rounded-lg mt-3'>
+            Find Trip
+          </button>
         </div>
 
         <div ref={panelRef} className='bg-white h-0 pointer-events-auto'>
