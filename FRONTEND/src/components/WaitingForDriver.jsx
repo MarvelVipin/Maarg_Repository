@@ -3,7 +3,7 @@ import React from 'react'
 const WaitingForDriver = (props) => {
   return (
     <div>
-      <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={()=>{props.WaitingForDriver(false)}}><i className="text-3xl text-gray-300 ri-arrow-down-wide-line pt-14"></i></h5>
+      <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => props.setWaitingForDriver(false)}><i className="text-3xl text-gray-300 ri-arrow-down-wide-line pt-14"></i></h5>
       
       <div className='flex items-center justify-between'>
         <img className='h-10' src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy85OWJmYWM5Mi00ODAzLTQxNGMtODRmYi1kMWZmNjU0NWM5YzAucG5n" alt="" />

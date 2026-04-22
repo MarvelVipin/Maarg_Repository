@@ -7,6 +7,7 @@ const LocationSearchPanel = ({
     setPickup,
     setDestination,
     setSuggestions,
+    setPanelOpen   
 }) => {
     return (
         <div className="bg-white">
@@ -14,7 +15,7 @@ const LocationSearchPanel = ({
                 <div
                     key={index}
                     className="p-3 border-b cursor-pointer hover:bg-gray-200"
-                    onClick={(props) => {
+                    onClick={() => {   
                         if (activeField === "pickup") {
                             setPickup(place.display_name);
                         } else {
@@ -22,7 +23,7 @@ const LocationSearchPanel = ({
                         }
 
                         setSuggestions([]);
-                        props.setPanelOpen(false);
+                        setPanelOpen(false);   
                     }}
                 >
                     {place.display_name}
