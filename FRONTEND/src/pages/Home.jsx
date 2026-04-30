@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { use, useRef, useState, useContext } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
@@ -11,6 +11,8 @@ import WaitingForDriver from '../components/WaitingForDriver.jsx'
 import MapComponent from "../components/MapComponent";
 import { useEffect } from "react";
 import { getLocationSuggestions } from "../services/locationService.js"
+import {SocketContext} from "../context/SocketContext.jsx"
+import {  UserDataContext } from "../context/UserContext.jsx"
 
 const Home = () => {
 
@@ -31,6 +33,13 @@ const Home = () => {
   const [waitingForDriver, setWaitingForDriver] = useState(false)
   const [fare, setFare] = useState({})
   const [vehicleType, setVehicleType] = useState(null)
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
+
+  useEffect(() => {
+    socket.emit("join", { userType: "user", userId: user_id });
+  }, [user]);
+
 
 
   const submitHandler = (e) => {

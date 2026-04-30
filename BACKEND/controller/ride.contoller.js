@@ -15,6 +15,9 @@ module.exports.createRide = async (req, res, next) => {
             destination,
             vehicleType
         });
+
+        
+
         return res.status(201).json(ride);
     } catch (error) {
         next(error);

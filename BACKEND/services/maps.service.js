@@ -1,4 +1,5 @@
 const axios = require('axios');
+const captainModel = require('../models/captain.model');
 
 async function getCoordinates(address) {
     const res = await axios.get(
@@ -23,8 +24,6 @@ async function getCoordinates(address) {
         lon: res.data[0].lon
     };
 }
-
-
 
 module.exports.getDistanceTime = async (origin, destination) => {
     try {
@@ -55,8 +54,6 @@ module.exports.getDistanceTime = async (origin, destination) => {
     }
 };
 
-
-
 module.exports.getSuggestions = async (input) => {
     const res = await axios.get(
         "https://nominatim.openstreetmap.org/search",
@@ -73,4 +70,17 @@ module.exports.getSuggestions = async (input) => {
     );
 
     return res.data;
+};
+
+
+module.exports.getCaptainInRadius = async (lat, lng, radius) => {
+    const captains = await captainModel.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [[lng, lat], radius / 6378.1]
+            }
+        }
+    });
+
+    return captains;
 };

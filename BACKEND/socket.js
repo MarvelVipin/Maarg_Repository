@@ -1,5 +1,7 @@
 const socketIo = require("socket.io");
 const userModel = require("./models/users.models");
+const captainModel = require("./models/captain.model");
+
 let io;
 
 function initiateSocket(server) {
@@ -9,14 +11,46 @@ function initiateSocket(server) {
             methods: ["GET", "POST"]
         }
     });
-    io.on("connection", (socket) => {
-        console.log(`New client connected:  + ${socket.id}`);
 
+    io.on("connection", (socket) => {
+        console.log(`New client connected: ${socket.id}`);
+
+        
+        socket.on("join", async (data) => {
+            try {
+                const { userId, userType } = data;
+                
+                console.log(`User joined with ID: ${userId}, Type: ${userType}`);
+
+                if (!userId || !userType) {
+                    console.log("Invalid join data:", data);
+                    return;
+                }
+
+                if (userType === "user") {
+                    await userModel.findByIdAndUpdate(userId, {
+                        socketId: socket.id
+                    });
+                } 
+                else if (userType === "captain") {
+                    await captainModel.findByIdAndUpdate(userId, {
+                        socketId: socket.id
+                    });
+                }
+
+                console.log(`${userType} joined with ID: ${userId}`);
+            } catch (error) {
+                console.error("Join Error:", error.message);
+            }
+        });
+
+        
         socket.on("disconnect", () => {
-            console.log(`Client disconnected:  + ${socket.id}`);
+            console.log(`Client disconnected: ${socket.id}`);
         });
     });
 }
+
 
 function sendMessageToSocketId(socketId, message) {
     if (io) {
@@ -26,4 +60,7 @@ function sendMessageToSocketId(socketId, message) {
     }
 }
 
-module.exports = { initiateSocket, sendMessageToSocketId };
+module.exports = {
+    initiateSocket,
+    sendMessageToSocketId
+};
