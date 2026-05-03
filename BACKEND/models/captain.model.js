@@ -57,17 +57,18 @@ const captainSchema = new mongoose.Schema({
             enum: ['bike', 'car', 'auto'],
         }
     },
+
     location: {
-        latitude: {
+        ltd: {
             type: Number,
         },
-        longitude: {
+        lng: {
             type: Number,
         }
     }
 });
 
-captainSchema.methods.generateAuthToken = function() {
+captainSchema.methods.generateAuthToken = function () {
     const token = jwt.sign(
         { _id: this._id, email: this.email },
         process.env.JWT_SECRET,
@@ -76,7 +77,7 @@ captainSchema.methods.generateAuthToken = function() {
     return token;
 };
 
-captainSchema.methods.comparePassword = async function(password) {
+captainSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 

@@ -22,7 +22,44 @@ const CaptainHome = (props) => {
   const { captain } = useContext(CaptainDataContext);
 
   useEffect(() => {
-    socket.emmit("join", { userType: "captain", userId: captain._id });
+    socket.emit("join", { userType: "captain", userId: captain._id });
+
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+
+          console.log(
+            {
+              userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude,
+            }
+            }
+          );
+
+          socket.emit("update-location-captain", {
+            userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude,
+            }
+          });
+        });
+      }
+    };
+
+    const locationInterval = setInterval(updateLocation, 10000);
+    updateLocation();
+
+    // return () => {
+    //   clearInterval(locationInterval);
+    // }
+  });
+
+  socket.on("new-ride", (data) => {
+    console.log("New ride request received:", data);
+    
   });
 
   useGSAP(function () {
