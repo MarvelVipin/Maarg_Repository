@@ -19,4 +19,8 @@ router.get('/get-fare', authMiddleware.authUser,
     query('destination').isString().isLength({ min: 3 }).withMessage('Destination is required'),
     rideController.getFare);
 
+
+
+router.post('/confirm', authMiddleware.authCaptain,body('rideId').isMongoId().withMessage('Invalid ride ID'), rideController.confirmRide);
+
 module.exports = router;

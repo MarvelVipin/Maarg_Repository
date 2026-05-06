@@ -41,6 +41,11 @@ const Home = () => {
   }, [user]);
 
 
+  socket.on("ride-confirmed",ride => {
+    setVehicleFound(false);
+    setWaitingForDriver(true);
+  });
+
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -266,6 +271,7 @@ async function createRide() {
           setConfirmRidePanel={setConfirmRidePanel}
           setVehicleFound={setVehicleFound}
           setVehiclePanel={setVehiclePanel}
+          
         />
       </div>
 

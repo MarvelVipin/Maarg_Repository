@@ -12,7 +12,7 @@ import { Socket } from 'socket.io-client'
 
 const CaptainHome = (props) => {
 
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true)
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false)
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false)
 
   const ridePopUpPanelRef = useRef(null)
@@ -20,6 +20,8 @@ const CaptainHome = (props) => {
 
   const { socket } = useContext(SocketContext);
   const { captain } = useContext(CaptainDataContext);
+
+  const [ride, setRide] = useState(null);
 
   useEffect(() => {
     socket.emit("join", { userType: "captain", userId: captain._id });
@@ -58,9 +60,15 @@ const CaptainHome = (props) => {
   });
 
   socket.on("new-ride", (data) => {
-    console.log("New ride request received:", data);
-    
+    console.log(data);
+    setRide(data);
+    setRidePopUpPanel(true);
   });
+
+  async function confirmRide() {
+    setRidePopUpPanel(false);
+    setConfirmRidePopUpPanel(true);
+  }
 
   useGSAP(function () {
     if (ridePopUpPanel) {
@@ -102,7 +110,7 @@ const CaptainHome = (props) => {
         <CaptainDetails />
       </div>
       <div ref={ridePopUpPanelRef} className='w-full fixed z-10 translate-y-full bottom-0  bg-white px-3 py-10 pt-12'>
-        <RidePopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
+        <RidePopUp confirmRide={confirmRide} ride={ride} setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
       </div>
       <div ref={confirmRidePopUpPanelRef} className='w-full h-screen fixed z-10 translate-y-full bottom-0  bg-white px-3 py-10 pt-12'>
         <ConfirmRidePopUp setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} setRidePopUpPanel={setRidePopUpPanel} />
