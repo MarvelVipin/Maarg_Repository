@@ -34,7 +34,7 @@ const submitHandler = async (e) => {
       setCaptain(data.captain)
 
       
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('captainToken', data.token)
 
       console.log("TOKEN SAVED:", localStorage.getItem('token'))
 

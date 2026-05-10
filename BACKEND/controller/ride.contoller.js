@@ -9,7 +9,7 @@ module.exports.createRide = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { userId, pickup, destination, vehicleType } = req.body;
+    const { pickup, destination, vehicleType } = req.body;
 
     try {
         const ride = await rideService.createRide({
@@ -26,7 +26,7 @@ module.exports.createRide = async (req, res, next) => {
          const  pickupCoordinates = await mapService.getCoordinates(pickup);
 
          console.log( pickupCoordinates);
-        const captainInRadius = await mapService.getCaptainInRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 2000);
+        const captainInRadius = await mapService.getCaptainInRadius(pickupCoordinates.lat, pickupCoordinates.lon, 2000);
 
         ride.otp = "";
 
@@ -67,7 +67,7 @@ module.exports.confirmRide = async (req, res, next) => {
     const { rideId } = req.body;
 
     try {
-        const ride = await rideService.confirmRide(rideId, req.captain._id );
+        const ride = await rideService.confirmRide( { rideId, captain: req.captain} );
         sendMessageToSocket(ride.user.socketId, {
             event: "ride-confirmed",
             data: ride

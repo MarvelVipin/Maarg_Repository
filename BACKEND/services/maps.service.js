@@ -1,7 +1,7 @@
 const axios = require('axios');
 const captainModel = require('../models/captain.model');
 
-async function getCoordinates(address) {
+module.exports.getAddressCoordinate = async (address) => {
     const res = await axios.get(
         "https://nominatim.openstreetmap.org/search",
         {
@@ -11,7 +11,7 @@ async function getCoordinates(address) {
             },
             headers: {
                 "User-Agent": "my-app"
-            }
+            } 
         }
     );
 
@@ -20,18 +20,20 @@ async function getCoordinates(address) {
     }
 
     return {
-        lat: res.data[0].lat,
-        lon: res.data[0].lon
-    };
+    lat: parseFloat(res.data[0].lat),
+    lng: parseFloat(res.data[0].lon)
+}
 }
 
-module.exports.getDistanceTime = async (origin, destination) => {
+module.exports.getDistanceTime = async (pickup, destination) => {
     try {
-        const originCoords = await getCoordinates(origin);
-        const destCoords = await getCoordinates(destination);
+        const originCoords = await module.exports.getAddressCoordinate(pickup);
+        const destCoords = await module.exports.getAddressCoordinate(destination);
+        console.log(originCoords);
+console.log(destCoords);
 
         const routeRes = await axios.get(
-            `https://router.project-osrm.org/route/v1/driving/${originCoords.lon},${originCoords.lat};${destCoords.lon},${destCoords.lat}`,
+            `https://router.project-osrm.org/route/v1/driving/${originCoords.lng},${originCoords.lat};${destCoords.lng},${destCoords.lat}`,
             {
                 params: { overview: "false" }
             }

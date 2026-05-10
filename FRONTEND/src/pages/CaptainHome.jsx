@@ -5,10 +5,11 @@ import RidePopUp from '../components/RidePopUp'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
-import { useEffect, useContext} from 'react'
-import {SocketContext} from "../context/SocketContext.jsx"
+import { useEffect, useContext } from 'react'
+import { SocketContext } from "../context/SocketContext.jsx"
 import { CaptainDataContext } from "../context/CaptainContext.jsx"
 import { Socket } from 'socket.io-client'
+import axios from 'axios'
 
 const CaptainHome = (props) => {
 
@@ -33,12 +34,18 @@ const CaptainHome = (props) => {
           console.log(
             {
               userId: captain._id,
-            location: {
-              ltd: position.coords.latitude,
-              lng: position.coords.longitude,
-            }
+              location: {
+                ltd: position.coords.latitude,
+                lng: position.coords.longitude,
+              }
             }
           );
+
+          socket.on("new-ride", (data) => {
+            console.log(data);
+            setRide(data);
+            setRidePopUpPanel(true);
+          });
 
           socket.emit("update-location-captain", {
             userId: captain._id,
@@ -53,19 +60,21 @@ const CaptainHome = (props) => {
 
     const locationInterval = setInterval(updateLocation, 10000);
     updateLocation();
-
-    // return () => {
-    //   clearInterval(locationInterval);
-    // }
   });
 
-  socket.on("new-ride", (data) => {
-    console.log(data);
-    setRide(data);
-    setRidePopUpPanel(true);
-  });
+
 
   async function confirmRide() {
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ride/confirm`, {
+      rideId: ride._id,
+      captainId: captain._id
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("captainToken")}`
+      }
+    })
+
     setRidePopUpPanel(false);
     setConfirmRidePopUpPanel(true);
   }

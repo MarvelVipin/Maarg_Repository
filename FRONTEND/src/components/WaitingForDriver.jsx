@@ -8,8 +8,8 @@ const WaitingForDriver = (props) => {
       <div className='flex items-center justify-between'>
         <img className='h-10' src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy85OWJmYWM5Mi00ODAzLTQxNGMtODRmYi1kMWZmNjU0NWM5YzAucG5n" alt="" />
         <div className='text-right '> 
-          <h2 className='text-lg font-medium'>Vivek Pandey</h2>
-          <h4 className='text-xl font-semibold -mt-1 -mb-1'>UP009RY</h4>
+          <h2 className='text-lg font-medium'>{props.ride?.captain?.fullname?.firstname}</h2>
+          <h4 className='text-xl font-semibold -mt-1 -mb-1'>{props.ride?.captain?.vehicle?.plate}</h4>
           <p className='text-sm font-sm text-gray-600'> Maruti Suzuki</p>
         </div>
       </div>
@@ -19,21 +19,21 @@ const WaitingForDriver = (props) => {
           <div className='flex items-center gap-5 p-3 border-b-2'>
             <i className=" text-lg text-green-800 font-bold ri-map-pin-line gap-5  "></i>
             <div>
-              <h4 className='text-lg font medium'>Brij Enclave Colony</h4>
-              <p className='text-gray-600 text-sm -mt-1'>Sunderpur, Varanasi, Uttar Pradesh</p>
+              <h4 className='text-lg font medium'>B88/11</h4>
+              <p className='text-gray-600 text-sm -mt-1'>{props.ride?.pickup}</p>
             </div>
           </div>
           <div className='flex items-center gap-5 p-3 border-b-2'>
             <i className="text-lg text-red-600 font-bold ri-map-pin-2-line gap-5  "></i>
             <div>
               <h4 className='text-lg font medium'>Brij Enclave Colony</h4>
-              <p className='text-gray-600 text-sm -mt-1'>Sunderpur, Varanasi, Uttar Pradesh</p>
+              <p className='text-gray-600 text-sm -mt-1'>{props.ride?.destination}</p>
             </div>
           </div>
           <div className='flex items-center gap-5 p-3'>
             <i className=" text-lg font-bold text-gray-600 ri-bank-card-line gap-5  "></i>
             <div>
-              <h4 className='text-lg font medium'>₹193.20</h4>
+              <h4 className='text-lg font medium'>₹{props.ride?.fare?.amount}</h4>
               <p className='text-gray-600 text-sm -mt-1'>Cash Cash</p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { use, useRef, useState, useContext } from 'react'
+import React, { useRef, useState, useContext, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
@@ -9,7 +9,6 @@ import ConfirmRide from '../components/ConfirmRide.jsx'
 import LookingForDriver from '../components/LookingForDriver.jsx'
 import WaitingForDriver from '../components/WaitingForDriver.jsx'
 import MapComponent from "../components/MapComponent";
-import { useEffect } from "react";
 import { getLocationSuggestions } from "../services/locationService.js"
 import {SocketContext} from "../context/SocketContext.jsx"
 import {  UserDataContext } from "../context/UserContext.jsx"
@@ -35,16 +34,28 @@ const Home = () => {
   const [vehicleType, setVehicleType] = useState(null)
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
+  const [ride, setRide] = useState(null);
 
   useEffect(() => {
-    socket.emit("join", { userType: "user", userId: user_id });
-  }, [user]);
 
+  if (!user) return;
 
-  socket.on("ride-confirmed",ride => {
+  socket.emit("join", {
+    userType: "user",
+    userId: user._id
+  });
+
+  socket.on("ride-confirmed", (ride) => {
     setVehicleFound(false);
     setWaitingForDriver(true);
+    setRide(ride);
   });
+
+  return () => {
+    socket.off("ride-confirmed");
+  };
+
+}, [user]);
 
 
   const submitHandler = (e) => {
@@ -144,7 +155,7 @@ const Home = () => {
       {
         params: { pickup, destination },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`
         }
       }
     );
@@ -165,7 +176,7 @@ async function createRide() {
       { pickup, destination, vehicleType },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`
         }
       }
     );
@@ -280,11 +291,15 @@ async function createRide() {
           pickup={pickup}
           destination={destination}
           fare={fare}
-          vehicleType={vehicleType} setVehicleFound={setVehicleFound} />
+          vehicleType={vehicleType} 
+          setVehicleFound={setVehicleFound} />
       </div>
 
       <div ref={waitingForDriverRef} className='w-full fixed z-20 bottom-0 bg-white px-3 py-10 pt-12 pointer-events-auto'>
-        <WaitingForDriver waitingForDriver={waitingForDriver} setWaitingForDriver={setWaitingForDriver} />
+        <WaitingForDriver 
+        ride={ride} 
+        setVehicleFound={setVehicleFound}
+        setWaitingForDriver={setWaitingForDriver} />
       </div>
 
     </div>
