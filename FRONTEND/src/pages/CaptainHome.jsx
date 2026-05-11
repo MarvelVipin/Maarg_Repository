@@ -122,7 +122,9 @@ const CaptainHome = (props) => {
         <RidePopUp confirmRide={confirmRide} ride={ride} setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
       </div>
       <div ref={confirmRidePopUpPanelRef} className='w-full h-screen fixed z-10 translate-y-full bottom-0  bg-white px-3 py-10 pt-12'>
-        <ConfirmRidePopUp setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} setRidePopUpPanel={setRidePopUpPanel} />
+        <ConfirmRidePopUp
+        ride={ride}
+         setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} setRidePopUpPanel={setRidePopUpPanel} />
       </div>
     </div>
   )

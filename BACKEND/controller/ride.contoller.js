@@ -23,10 +23,10 @@ module.exports.createRide = async (req, res, next) => {
 
          res.status(201).json(ride);
 
-         const  pickupCoordinates = await mapService.getCoordinate(pickup);
+         const  pickupCoordinates = await mapService.getAddressCoordinate(pickup);
 
          console.log( pickupCoordinates);
-        const captainInRadius = await mapService.getCaptainInRadius(pickupCoordinates.lat, pickupCoordinates.lon, 2000);
+        const captainInRadius = await mapService.getCaptainInRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 2000);
 
         ride.otp = "";
 
@@ -64,12 +64,53 @@ module.exports.confirmRide = async (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { rideId } = req.body;
+    const { rideId } = req.body; 
 
     try {
         const ride = await rideService.confirmRide( { rideId, captain: req.captain} );
         sendMessageToSocket(ride.user.socketId, {
             event: "ride-confirmed",
+            data: ride
+        });
+        return res.status(200).json(ride);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.startRide = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { rideId, otp } = req.query;
+
+    try {
+        const ride = await rideModel.startRide({ rideId, otp, captain: req.captain });
+        sendMessageToSocket(ride.user.socketId, {
+            event: "ride-started",
+            data: ride
+        });
+        return res.status(200).json(ride);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+
+module.exports.endRide = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { rideId } = req.query;
+
+    try {
+        const ride = await rideModel.endRide({ rideId, captain: req.captain });
+        sendMessageToSocket(ride.user.socketId, {
+            event: "ride-ended",
             data: ride
         });
         return res.status(200).json(ride);

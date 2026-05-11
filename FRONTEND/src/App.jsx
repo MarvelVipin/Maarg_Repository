@@ -13,6 +13,7 @@ import UserLogout from './pages/UserLogout'
 import CaptainHome from './pages/CaptainHome'
 import Riding from './pages/Riding'
 import CaptianRiding from './pages/CaptianRiding'
+import 'leaflet/dist/leaflet.css'
 
 
 const App = () => {

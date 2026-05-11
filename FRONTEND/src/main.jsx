@@ -7,6 +7,7 @@ import UserContext from './context/UserContext.jsx'
 import CaptainContext from './context/CaptainContext.jsx'
 import 'leaflet/dist/leaflet.css';
 import SocketProvider from './context/SocketContext.jsx'
+import 'leaflet/dist/leaflet.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

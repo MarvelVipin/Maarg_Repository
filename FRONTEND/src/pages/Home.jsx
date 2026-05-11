@@ -12,6 +12,8 @@ import MapComponent from "../components/MapComponent";
 import { getLocationSuggestions } from "../services/locationService.js"
 import {SocketContext} from "../context/SocketContext.jsx"
 import {  UserDataContext } from "../context/UserContext.jsx"
+import { useNavigate } from 'react-router-dom'
+import LiveTracking from '../components/LiveTracking.jsx'
 
 const Home = () => {
 
@@ -36,9 +38,9 @@ const Home = () => {
   const { user } = useContext(UserDataContext);
   const [ride, setRide] = useState(null);
 
-  useEffect(() => {
+  const navigate = useNavigate();
 
-  if (!user) return;
+  useEffect(() => {
 
   socket.emit("join", {
     userType: "user",
@@ -51,8 +53,14 @@ const Home = () => {
     setRide(ride);
   });
 
+  socket.on("ride-started", (ride) => {
+    setWaitingForDriver(false);
+    navigate("/riding", { state: { ride } });
+  });
+
   return () => {
     socket.off("ride-confirmed");
+    socket.off("ride-started");
   };
 
 }, [user]);
@@ -195,11 +203,8 @@ async function createRide() {
 
 
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <MapComponent center={[25.3176, 82.9739]}
-          zoom={13}
-          zoomControl={false}
-          className="h-full w-full" />
-      </div>
+  <LiveTracking />
+</div>
 
 
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full z-10 pointer-events-none pt-20'>
