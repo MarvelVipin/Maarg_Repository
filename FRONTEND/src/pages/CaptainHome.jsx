@@ -25,26 +25,29 @@ const CaptainHome = (props) => {
   const [ride, setRide] = useState(null);
 
   useEffect(() => {
+    if (!socket || !captain?._id) return;
+
     socket.emit("join", { userType: "captain", userId: captain._id });
 
+    const handleNewRide = (data) => {
+      console.log("new-ride event:", data);
+      setRide(data);
+      setRidePopUpPanel(true);
+    };
+
+    socket.on("new-ride", handleNewRide);
+
     const updateLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
+      if (!navigator.geolocation) return;
 
-          console.log(
-            {
-              userId: captain._id,
-              location: {
-                ltd: position.coords.latitude,
-                lng: position.coords.longitude,
-              }
-            }
-          );
-
-          socket.on("new-ride", (data) => {
-            console.log(data);
-            setRide(data);
-            setRidePopUpPanel(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log({
+            userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
           });
 
           socket.emit("update-location-captain", {
@@ -52,16 +55,23 @@ const CaptainHome = (props) => {
             location: {
               ltd: position.coords.latitude,
               lng: position.coords.longitude,
-            }
+            },
           });
-        });
-      }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+        }
+      );
     };
 
-    const locationInterval = setInterval(updateLocation, 10000);
     updateLocation();
-  });
+    const locationInterval = setInterval(updateLocation, 10000);
 
+    return () => {
+      clearInterval(locationInterval);
+      socket.off("new-ride", handleNewRide);
+    };
+  }, [socket, captain]);
 
 
   async function confirmRide() {

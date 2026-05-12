@@ -1,6 +1,14 @@
 import React from 'react'
 
 const ConfirmRide = (props) => {
+  const handleConfirm = async () => {
+    try {
+      await props.createRide();
+    } catch (error) {
+      console.error("Failed to create ride:", error);
+    }
+  };
+
   return (
     <div>
       <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={()=>{props.setConfirmRidePanel(false) }}><i className="text-3xl text-gray-300 ri-arrow-down-wide-line pt-14"></i></h5>
@@ -31,11 +39,7 @@ const ConfirmRide = (props) => {
             </div>
           </div>
         </div>
-        <button onClick={()=>{
-          props.setVehicleFound(true)
-          props.setConfirmRidePanel(false)
-          props.createRide()
-        }} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Confirm</button>
+        <button type="button" onClick={handleConfirm} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Confirm</button>
       </div>
     </div>
   )

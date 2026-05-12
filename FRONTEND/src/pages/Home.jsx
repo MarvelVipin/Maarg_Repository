@@ -189,10 +189,13 @@ async function createRide() {
       }
     );
 
-    console.log(response.data); 
-
+    console.log("Ride created:", response.data);
+    setConfirmRidePanel(false);
+    setVehicleFound(true);
+    setVehiclePanel(false);
   } catch (err) {
     console.error(err.response?.data || err.message);
+    throw err;
   }
 }
 
